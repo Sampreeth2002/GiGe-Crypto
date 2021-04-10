@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from "react"
-import { useParams, useHistory } from "react-router-dom"
+import Identicon from "identicon.js"
+import React, { useCallback, useEffect, useRef, useState } from "react"
+import { Link, useHistory, useParams } from "react-router-dom"
 import { useDataInfo } from "../utils"
 
 export const UpdateProduct = ({ transactions, account, fetchUserInfo }) => {
@@ -24,77 +25,112 @@ export const UpdateProduct = ({ transactions, account, fetchUserInfo }) => {
 	const imageUrl1Ref = useRef()
 	const imageUrl2Ref = useRef()
 	const descriptionRef = useRef()
-	const locatipnRef = useRef()
+	const locationRef = useRef()
 	const priceRef = useRef()
 
 	console.log(userInfo)
 
+	const handleProductSubmit = useCallback(
+		event => {
+			event.preventDefault()
+			transactions.methods
+				.updateProductInfo(
+					productId,
+					productNameRef.current.value,
+					imageUrl1Ref.current.value,
+					imageUrl2Ref.current.value,
+					descriptionRef.current.value,
+					locationRef.current.value,
+					Number(priceRef.current.value)
+				)
+				.send({ from: account })
+				.on("receipt", receipt => {
+					console.log(receipt)
+				})
+				.on("error", error => {
+					console.error(error)
+				})
+		},
+		[account, transactions.methods, productId]
+	)
+
 	return (
-		<form
-			onSubmit={event => {
-				event.preventDefault()
-				transactions.methods
-					.updateProductInfo(
-						productId,
-						productNameRef.current.value,
-						imageUrl1Ref.current.value,
-						imageUrl2Ref.current.value,
-						descriptionRef.current.value,
-						locatipnRef.current.value,
-						Number(priceRef.current.value)
-					)
-					.send({ from: account })
-					.on("receipt", receipt => {
-						console.log(receipt)
-					})
-					.on("error", error => {
-						console.error(error)
-					})
-			}}
-		>
-			<input
-				type='text'
-				placeholder='Product Name'
-				ref={productNameRef}
-				defaultValue={product?.productName}
-				disabled={product === null}
-			/>
-			<input
-				type='text'
-				placeholder='Image URL 1'
-				ref={imageUrl1Ref}
-				defaultValue={product?.imageUrl1}
-				disabled={product === null}
-			/>
-			<input
-				type='text'
-				placeholder='Image URL 2'
-				ref={imageUrl2Ref}
-				defaultValue={product?.imageUrl2}
-				disabled={product === null}
-			/>
-			<input
-				type='text'
-				placeholder='Description of Product'
-				ref={descriptionRef}
-				defaultValue={product?.description}
-				disabled={product === null}
-			/>
-			<input
-				type='text'
-				placeholder='Location'
-				ref={locatipnRef}
-				defaultValue={product?.location}
-				disabled={product === null}
-			/>
-			<input
-				type='number'
-				placeholder='Price'
-				ref={priceRef}
-				defaultValue={product?.price}
-				disabled={product === null}
-			/>
-			<input type='submit' />
-		</form>
+		<div>
+			<div className='bg-white text-center text-6xl font-bold font-body py-8 text-gray-700'>
+				<span className='text-purple-400'>G</span>i<span className='text-blue-400'>G</span>e
+				<span>!</span>
+			</div>
+			<div className='m-auto my-10 md:absolute md:right-10 md:top-6 md:my-0 flex items-center justify-items-center'>
+				<Link className='font-bold font-body p-3 px-5 m-3' to='/'>
+					Hello {userInfo?.name} 😁
+				</Link>
+				<Link to='/'>
+					<img
+						className='w-12 h-12 rounded-full'
+						src={`data:image/png;base64,${new Identicon(account, 420).toString()}`}
+						alt='userIcon'
+					/>
+				</Link>
+			</div>
+			<div className='w-screen flex place-items-center flex-col'>
+				<form
+					className='w-full sm:w-2/3 h-2/3 md:w-1/2 md:h-full shadow-2xl p-10 font-body'
+					onSubmit={handleProductSubmit}
+				>
+					<div className='text-2xl text-center'>Product Details</div>
+					<input
+						className='input'
+						autoComplete='off'
+						type='text'
+						ref={productNameRef}
+						placeholder='Product Name'
+						defaultValue={product?.productName}
+					/>
+					<input
+						className='input'
+						autoComplete='off'
+						type='url'
+						ref={imageUrl1Ref}
+						placeholder='Image Url 1'
+						defaultValue={product?.imageUrl1}
+					/>
+					<input
+						className='input'
+						autoComplete='off'
+						type='url'
+						ref={imageUrl2Ref}
+						placeholder='Image Url 2'
+						defaultValue={product?.imageUrl2}
+					/>
+					<input
+						className='input'
+						autoComplete='off'
+						type='text'
+						ref={descriptionRef}
+						placeholder='Description of Product'
+						defaultValue={product?.description}
+					/>
+					<input
+						className='input'
+						autoComplete='off'
+						type='text'
+						ref={locationRef}
+						placeholder='Location'
+						defaultValue={product?.location}
+					/>
+					<input
+						className='input'
+						autoComplete='off'
+						type='number'
+						ref={priceRef}
+						placeholder='Price'
+						defaultValue={product?.price}
+					/>
+					<div className='text-center mt-10'>
+						<button className='w-48 h-12 bg-purple-300 focus:outline-none'>Submit</button>
+					</div>
+				</form>
+			</div>
+		</div>
 	)
 }

@@ -3,7 +3,7 @@ import { BrowserRouter, Route } from "react-router-dom"
 import Web3 from "web3"
 import Transaction from "../abis/Transactions.json"
 import { Dashboard } from "./Dashboard"
-import { History } from "./History"
+import { Profile } from "./Profile"
 import { Product } from "./Product"
 import { SellProduct } from "./SellProduct"
 import { UpdateProduct } from "./UpdateProduct"
@@ -54,10 +54,10 @@ export const App = () => {
 				)}
 			/>
 			<Route
-				path='/history'
+				path='/profile'
 				exact
 				render={() => (
-					<History transactions={transactions} account={account} fetchUserInfo={fetchUserInfo} />
+					<Profile transactions={transactions} account={account} fetchUserInfo={fetchUserInfo} />
 				)}
 			/>
 			<Route
