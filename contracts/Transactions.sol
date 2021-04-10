@@ -21,6 +21,16 @@ contract Transactions {
       string location,
       uint price
    );
+   
+   event ProductInfoUpdated(
+      uint id,
+      string productName,
+      string imageUrl1,
+      string imageUrl2,
+      string description,
+      string location,
+      uint price
+   );
 
    event ProductBought(
       uint id,
@@ -67,6 +77,27 @@ contract Transactions {
          productName: _productName,
          owner: msg.sender,
          seller: msg.sender,
+         imageUrl1: _imageUrl1,
+         imageUrl2: _imageUrl2,
+         description: _description,
+         location: _location,
+         price: _price
+      });
+   }
+
+   function updateProductInfo(
+      uint _id, 
+      string memory _productName,
+      string memory _imageUrl1,
+      string memory _imageUrl2,
+      string memory _description,
+      string memory _location,
+      uint _price
+   ) public {
+      productsData.update(_id, _productName, _imageUrl1, _imageUrl2, _description, _location, _price);
+      emit ProductInfoUpdated({
+         id: _id,
+         productName: _productName,
          imageUrl1: _imageUrl1,
          imageUrl2: _imageUrl2,
          description: _description,

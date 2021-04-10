@@ -67,6 +67,29 @@ contract("Transactions", ([accn1, buyer, seller]) => {
 			)
 		})
 
+		it("updates info for a product", async () => {
+			const {
+				logs: [{ args: result }],
+			} = await transactions.updateProductInfo(
+				1,
+				"xyz",
+				"url1",
+				"url2",
+				"description for pqr",
+				"location 456",
+				web3.utils.toWei("10", "Ether"),
+				{ from: seller }
+			)
+
+			assert.equal(result.id, 1)
+			assert.equal(result.productName, "xyz")
+			assert.equal(result.imageUrl1, "url1")
+			assert.equal(result.imageUrl2, "url2")
+			assert.equal(result.description, "description for pqr")
+			assert.equal(result.location, "location 456")
+			assert.equal(result.price, web3.utils.toWei("10", "Ether"))
+		})
+
 		it("buys a product for sale", async () => {
 			await transactions.buyProduct(3, { from: buyer, value: web3.utils.toWei("5", "Ether") })
 			await transactions.buyProduct(3, { from: buyer, value: web3.utils.toWei("5", "Ether") })

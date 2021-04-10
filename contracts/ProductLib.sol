@@ -23,18 +23,18 @@ library ProductLib {
       _;
    }
 
-   modifier hasDifferentAddress(address owner) {
-      require(owner != msg.sender, "Seller can not buy his own Product");
+   modifier compareAddress(address owner, bool shouldBeSame) {
+      require((owner == msg.sender) == shouldBeSame, "Seller can not buy his own Product");
       _;
    }
 
-   modifier isNotBought(address owner, address seller) {
-      require(owner == seller, "Product has already been bought");
+   modifier isNotBought(Product memory _product) {
+      require(_product.owner == _product.seller, "Product has already been bought");
       _;
    }
 
-   function fetch(Data storage self, uint _productId) 
-   public view isWithinBounds(self.totalProducts, _productId)
+   function fetch(Data storage self, uint _productId) public view 
+   isWithinBounds(self.totalProducts, _productId)
    returns(
       uint id, 
       string memory productName,
@@ -83,11 +83,36 @@ library ProductLib {
       ++self.totalProducts;
    }
 
-   function getToBuy(Data storage self, uint _idx) 
-   public 
-   isWithinBounds(self.totalProducts, _idx)
-   hasDifferentAddress(self.products[_idx].seller) 
-   isNotBought(self.products[_idx].owner, self.products[_idx].seller) {
-      self.products[_idx].owner = msg.sender;
+   function update(
+      Data storage self, 
+      uint _id, 
+      string memory _productName,
+      string memory _imageUrl1,
+      string memory _imageUrl2,
+      string memory _description,
+      string memory _location,
+      uint _price
+   ) public 
+   isWithinBounds(self.totalProducts, _id) 
+   compareAddress(self.products[_id].seller, true) 
+   isNotBought(self.products[_id]) {
+      self.products[_id] = Product({
+         id: _id,
+         productName: _productName,
+         owner: msg.sender,
+         seller: msg.sender,
+         imageUrl1: _imageUrl1,
+         imageUrl2: _imageUrl2,
+         description: _description,
+         location: _location,
+         price: _price
+      });
+   }
+
+   function getToBuy(Data storage self, uint _id) public 
+   isWithinBounds(self.totalProducts, _id)
+   compareAddress(self.products[_id].seller, false) 
+   isNotBought(self.products[_id]) {
+      self.products[_id].owner = msg.sender;
    }
 }

@@ -33,8 +33,8 @@ library AuthenticationLib {
       });
    }
 
-   function get(Data storage self, address _key) 
-   public view returns(string memory name, string memory email, string memory phone) {
+   function get(Data storage self, address _key) public view 
+   returns(string memory name, string memory email, string memory phone) {
       UserInfo memory _userInfo = self.userInfo[_key];
       return (_userInfo.name, _userInfo.email, _userInfo.phone);
    }
