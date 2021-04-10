@@ -2,7 +2,7 @@ const Transactions = artifacts.require("./Transactions.sol")
 
 require("chai").use(require("chai-as-promised")).should()
 
-contract("Transactions", ([accn1, buyer, seller]) => {
+contract("Transactions", ([accn1, seller, buyer]) => {
 	let transactions
 
 	before(async () => {

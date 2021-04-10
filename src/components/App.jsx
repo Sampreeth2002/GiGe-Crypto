@@ -6,6 +6,7 @@ import { Dashboard } from "./Dashboard"
 import { History } from "./History"
 import { Product } from "./Product"
 import { SellProduct } from "./SellProduct"
+import { UpdateProduct } from "./UpdateProduct"
 import { SignUp } from "./SignUp"
 
 export const App = () => {
@@ -64,6 +65,17 @@ export const App = () => {
 				exact
 				render={() => (
 					<SellProduct
+						transactions={transactions}
+						account={account}
+						fetchUserInfo={fetchUserInfo}
+					/>
+				)}
+			/>
+			<Route
+				path='/update/product/:id'
+				exact
+				render={() => (
+					<UpdateProduct
 						transactions={transactions}
 						account={account}
 						fetchUserInfo={fetchUserInfo}

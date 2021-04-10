@@ -17,7 +17,7 @@ export const useDataInfo = (fetchInfoData, ifErrorRevertTo) => {
 				if (ifErrorRevertTo !== undefined) history.replace(ifErrorRevertTo)
 			}
 		})()
-	}, [history, ifErrorRevertTo])
+	}, [history, ifErrorRevertTo, fetchInfoData])
 
 	return { data, error }
 }

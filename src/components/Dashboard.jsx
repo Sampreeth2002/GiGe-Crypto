@@ -17,6 +17,17 @@ export const Dashboard = ({ transactions, fetchUserInfo }) => {
 	}, [transactions.events, setProducts])
 
 	useEffect(() => {
+		transactions.events.ProductInfoUpdated({}).on("data", event => {
+			console.log(event)
+			setProducts(prevProducts =>
+				prevProducts.map(product =>
+					product.id === event.returnValues.id ? { ...product, ...event.returnValues } : product
+				)
+			)
+		})
+	}, [transactions.events, setProducts])
+
+	useEffect(() => {
 		transactions.events.ProductBought({}).on("data", event => {
 			console.log(event)
 			setProducts(prevProducts =>

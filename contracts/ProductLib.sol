@@ -23,8 +23,13 @@ library ProductLib {
       _;
    }
 
-   modifier compareAddress(address owner, bool shouldBeSame) {
-      require((owner == msg.sender) == shouldBeSame, "Seller can not buy his own Product");
+   modifier compareAddress(address owner, bool _shouldBeSame) {
+      require(
+         (owner == msg.sender) == _shouldBeSame, 
+         _shouldBeSame 
+            ? "Only Seller can Mutate the Product"
+            : "Seller can not buy his own Product"
+      );
       _;
    }
 
