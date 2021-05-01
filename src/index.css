@@ -8,7 +8,7 @@
 	@apply bg-gray-50 p-4 w-full rounded-xl mt-4 focus:outline-none;
 }
 
-@layer utilities {
+@layer utilities { 
 	.carousel-open:checked + .carousel-item {
 		position: static;
 		opacity: 100;
