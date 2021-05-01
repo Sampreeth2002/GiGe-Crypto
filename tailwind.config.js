@@ -5,7 +5,7 @@ module.exports = {
 		extend: {
 			fontFamily: {
 				body: ["Poppins"],
-			},
+			}, 
 		},
 	},
 	variants: {
