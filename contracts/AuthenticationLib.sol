@@ -8,7 +8,7 @@ library AuthenticationLib {
    }
 
    struct Data {
-      mapping(address => UserInfo) userInfo;
+      mapping(address => UserInfo) userInfo; 
       address[] keys;
    }
 
