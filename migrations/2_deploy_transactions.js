@@ -9,3 +9,4 @@ module.exports = async deployer => {
 	await deployer.link(ProductLib, Transactions)
 	await deployer.deploy(Transactions)
 }
+ 
