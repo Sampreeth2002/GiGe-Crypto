@@ -5,7 +5,7 @@ require("chai").use(require("chai-as-promised")).should()
 contract("Transactions", ([accn1, seller, buyer]) => {
 	let transactions
 
-	before(async () => {
+	before(async () => { 
 		transactions = await Transactions.deployed()
 	})
 
